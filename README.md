@@ -1,0 +1,2 @@
+CSC181
+Simple Student Information System
