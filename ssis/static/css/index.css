@@ -1,0 +1,31 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.row{
+    background-color: #787D33;
+    border-radius: 30px;
+    box-shadow: 12px 12px 22px grey;
+}
+#main-image{
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+.btn1{
+    border: none;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    background-color : #424530;
+    color: #fafafa;
+    border-radius: 10px;
+
+    font-style: normal;
+    font-weight: bold;
+}
+.btn1:hover{
+    background-color : #633f12;
+    color: #424530;
+    border: 2px solid #ffefcd;
+}
