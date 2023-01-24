@@ -1,5 +1,8 @@
-from flask import Blueprint
+import cloudinary
+from os import getenv
 
-admin = Blueprint('admin', __name__)
-
-from . import routes
+cloudinary.config(
+    cloud_name = getenv('CLOUD_NAME'),
+    api_key = getenv('API_KEY'),
+    api_secret = getenv('API_SECRET')
+)
