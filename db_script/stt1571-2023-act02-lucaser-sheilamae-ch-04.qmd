@@ -1,0 +1,75 @@
+---
+title: "Chapter 04: Filtering rows"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 4.1 Row-position selection
+
+```{r}
+iris %>% 
+  slice(1:5)
+```
+
+```{r}
+iris %>% 
+  slice(-(1:floor(n()/3)))
+```
+
+## 4.2 Conditional selection
+
+```{r}
+iris %>% 
+  filter(Species=="virginica")
+```
+
+```{r}
+iris %>% 
+  filter(Species == "virginica",
+         Sepal.Length > mean(Sepal.Length))
+```
+
+```{r}
+iris %>% 
+  filter(Species == "virginica" |
+           Sepal.Length > mean(Sepal.Length))
+```
+
+## 4.3 Advanced row filtering
+
+```{r}
+iris %>% 
+  filter_all(any_vars(.>7.5))
+```
+
+```{r}
+iris %>% 
+  filter_all(any_vars(abs(. - mean(.))>2*sd(.)))
+```
+
+```{r}
+iris %>% 
+  filter_all(all_vars(. < mean(.)))
+```
+
+```{r}
+iris %>% 
+  filter_if(is.numeric, all_vars(.<mean(.)))
+```
+
+```{r}
+iris %>% 
+  filter_if(~is.numeric(.) & n_distinct(.)>30,
+            any_vars(.<mean(.)))
+```
+
+```{r}
+iris %>% 
+  filter_at(vars(ends_with("Length")),
+            all_vars(.<mean(.)))
+```
+
+## 4.4 Summary
+
+## 4.5 Exercises
