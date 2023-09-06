@@ -1,0 +1,12 @@
+---
+title: "Chapter 15: Conclusion"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 15.1 The tidyverse
+
+## 15.2 Stepping through the workflow
+
+## 15.3 Thank you

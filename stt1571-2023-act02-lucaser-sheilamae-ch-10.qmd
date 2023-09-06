@@ -1,0 +1,119 @@
+---
+title: "Chapter 10: Summarising data"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 10.1 Producing summaries
+
+```{r}
+iris %>%
+  summarise(mean(Sepal.Width), mean(Sepal.Length))
+```
+
+```{r}
+iris %>%
+  summarise(Mean.Sepal.Width=mean(Sepal.Width),
+            Mean.Sepal.Length=mean(Sepal.Length))
+```
+
+## 10.2 Aggregate functions
+
+```{r}
+iris %>%
+  summarise(n = n(), unique= n_distinct(Species),
+            first = first(Species), last = last(Species),
+            '51st' = nth(Species, 51))
+```
+
+## 10.3 Advanced aggregations
+
+```{r}
+iris %>%
+  summarise_all(n_distinct)
+```
+
+```{r}
+iris %>%
+  summarise_if(is.numeric, mean)
+```
+
+```{r}
+iris %>%
+  summarise_at(vars(Sepal.Lengt:Petal.Length), mean)
+```
+
+## 10.4 Summarising by groups
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(Avg.Sepal.Length=mean(Sepal.Length))
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(Avg.Sepal.Length=mean(Sepal.Length))
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  slice(1)
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  arrange(desc(Sepal.Length))
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(SpeciesN=n()) %>%
+  group_by(Sepal.Length) %>%
+  mutate(Sepal.LengthN=n())
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(SpeciesN=n()) %>%
+  group_by(Sepal.Length, add=TRUE) %>%
+  mutate(Sepal.LengthN=n())
+```
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  mutate(SpeciesN=n()) %>%
+  ungroup() %>%
+  head()
+```
+
+## 10.5 Advanced grouping
+
+```{r}
+iris %>%
+  group_by_all() %>%
+  summarise(nrows=n())
+```
+
+```{r}
+iris %>%
+  group_by_if(~n_distinct(.)<30) %>%
+  summarise(n())
+```
+
+```{r}
+iris %>%
+  group_by_at(vars(starts_with("Sp"))) %>%
+  summarise(n())
+```
+
+## 10.6 Summary
+
+## 10.7 Exercises

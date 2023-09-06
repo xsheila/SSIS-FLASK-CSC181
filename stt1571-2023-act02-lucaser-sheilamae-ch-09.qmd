@@ -1,0 +1,161 @@
+---
+title: "Chapter 09: Working with text"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 9.1 Strings
+
+```{r}
+library(stringr)
+```
+
+```{r}
+simple <- "This IS HOrribly typed!"
+numbers <- c("02", "11", "10", "1")
+```
+
+### 9.1.1 Hunting for Values
+
+```{r}
+str_detect(simple, "typed")
+```
+
+```{r}
+str_extract(simple,"typed.*")
+```
+
+```{r}
+str_replace(simple, "typed", "written")
+str_replace_all(simple, "r", "b")
+```
+
+```{r}
+str_count(simple, "[iI]")
+```
+
+### 9.1.2 Regular expressions
+
+```{r}
+# Extract the first vowel that appears
+str_extract(simple, "[aeiou]")
+# Extract the first vowel and everything after it
+str_extract(simple, "[aeiou].*$")
+# Extract all lowercase letters
+str_extract_all(simple, "[a-z]")
+# Check if string starts with a capital letter
+str_detect(simple,"^[A-Z]")
+# Check if string ends in punctuation
+str_detect(simple,"[:punct:]$")
+# Check if `r` appears twice in a row
+str_detect(simple, "r{2}")
+# Extract where a vowel is followed by a `b`
+str_extract(simple,"[aeiou]b")
+```
+
+### 9.1.3 String splitting
+
+```{r}
+str_split(simple, boundary("word"))
+str_split(simple, boundary("sentence"))
+```
+
+```{r}
+str_split(simple, "i")
+str_split(simple, "[iI]")
+```
+
+### 9.1.4 Other tasks
+
+```{r}
+str_to_lower(simple)
+str_to_title(simple)
+str_to_upper(simple)
+```
+
+```{r}
+str_trim(simple)
+```
+
+```{r}
+str_order(numbers, numeric=TRUE)
+str_sort(numbers, numeric=TRUE)
+```
+
+```{r}
+str_length(numbers)
+```
+
+### 9.1.5 Advanced string operations
+
+```{r}
+strings <- c("A word", "Two words", "Not three words")
+
+strings %>% 
+  str_split(boundary("word"))
+```
+
+```{r}
+strings %>% 
+  str_split(boundary("word")) %>% 
+  str_detect("w")
+```
+
+```{r}
+library(purrr)
+strings %>% 
+  str_split(boundary("word")) %>% 
+  map(str_detect, "w")
+```
+
+## 9.2 Factors
+
+```{r}
+myString <- c("red", "blue", "yellow", NA, "red")
+myString
+```
+
+```{r}
+myFactor <- factor(myString)
+myFactor
+```
+
+```{r}
+levels(myFactor)
+```
+
+```{r}
+as.numeric(myFactor)
+```
+
+```{r}
+library(forcats)
+```
+
+```{r}
+fct_count(myFactor)
+```
+
+```{r}
+fct_explicit_na(myFactor)
+```
+
+```{r}
+fct_infreq(myFactor)
+```
+
+```{r}
+fct_lump(myFactor, n=1)
+fct_lump(myFactor, prop=.25, other_level = "OTHER")
+fct_lump(myFactor, n=-1, other_level = "other")
+```
+
+```{r}
+set.seed(127)
+fct_anon(myFactor)
+```
+
+## Summary
+
+## Exercises

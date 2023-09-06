@@ -1,0 +1,79 @@
+---
+title: "Chapter 02: Data Pipelines"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+```{r}
+# The all-in-one
+avg_area<-mean(iris$Sepal.Length[iris$Species=="setosa"]*
+                 iris$Sepal.Width[iris$Species=="setosa"])
+
+# One assign at a time
+is_setosa   <- iris$Species=="setosa"
+setosa      <- iris[is_setosa, ]
+setosa_area <- setosa$Sepal.Length * setosa$Sepal.Width
+avg_area    <- mean(setosa_area)
+```
+
+## 2.1 About piping R
+
+```{r}
+library(magrittr)
+```
+
+## 2.2 Simple usage
+
+```{r}
+letters %>%
+  toupper() %>%
+  length()
+```
+
+```{r}
+iris %>%
+  head() %>%
+  nrow()
+```
+
+## 2.3 Assigning results
+
+```{r}
+iris_filtered <- iris %>% head()
+
+iris_filtered2 <- iris %>%
+  head()
+```
+
+```{r}
+iris %>%
+  head() ->
+  iris_filtered3
+```
+
+## 2.4 Jumbled functions
+
+```{r}
+# The input vector is the last thing you supply to sub()
+letterz <- sub("s","z", letters)
+
+# Statistical modelling functions usually take a
+# description of the model first before you provide 
+# the training dataset
+my_lm <- lm(Sepal.Width~Sepal.Length, iris)
+```
+
+```{r}
+letters %>%
+  sub("s","z", .) ->
+  letterz
+
+iris %>%
+  lm(Sepal.Width~Sepal.Length, .) ->
+  my_lm
+```
+
+## 2.5 Summary
+
+## 2.6 Exercises

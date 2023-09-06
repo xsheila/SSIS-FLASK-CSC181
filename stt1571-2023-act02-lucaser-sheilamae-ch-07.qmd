@@ -1,0 +1,105 @@
+---
+title: "Chapter 07: Changing your data"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+```{r}
+iris %>%
+  mutate(Sepal.Area = Sepal.Width * Sepal.Length)
+```
+
+```{r}
+iris %>% 
+  mutate(Sepal.Area = Sepal.Width * Sepal.Length,
+  Avg.Sepal.Area = mean(Sepal.Area))
+```
+
+```{r}
+iris %>%
+  mutate(Sepal.Width=Sepal.Width*.9)
+```
+
+```{r}
+iris %>%
+  mutate(Sepal.Length=NULL)
+```
+
+```{r}
+iris %>% 
+  select(-Sepal.Width)
+```
+
+```{r}
+iris %>%
+  mutate(Sepal.Area = Sepal.Width * Sepal.Length,
+    Avg.Sepal.Area = mean(Sepal.Area),
+    Sepal.Width=Sepal.Width*.9,
+    Sepal.Length=NULL)
+```
+
+## 7.1 Useful functions
+
+```{r}
+iris %>%
+  mutate(id=row_number())
+```
+
+```{r}
+iris %>%
+  mutate(prev = lag(Sepal.Length),
+         future = lead(Sepal.Length))
+```
+
+```{r}
+iris %>%
+  mutate(size = case_when(
+    Sepal.Length < mean(Sepal.Length)  ~ "s",
+    Sepal.Length > mean(Sepal.Length)  ~ "l",
+    TRUE ~ "m"
+  ))
+```
+
+```{r}
+iris %>%
+  mutate(Species = case_when(
+    Species == "setosa"  ~ toupper(Species),
+    TRUE ~ as.character(Species)
+  ))
+```
+
+```{r}
+iris %>%
+  mutate(runagg=cumall(Sepal.Length<mean(Sepal.Length)))
+```
+
+```{r}
+iris %>%
+  transmute(Sepal.Width=floor(Sepal.Width),
+            Species = case_when(
+    Species == "setosa"  ~ toupper(Species),
+    TRUE ~ as.character(Species)
+  ))
+```
+
+## 7.2 Advanced data changes
+
+```{r}
+iris %>%
+  mutate_all(as.character)
+```
+
+```{r}
+iris %>%
+  mutate_if(is.numeric, ~ . + rnorm(.))
+```
+
+```{r}
+iris %>%
+  mutate_at(vars(Sepal.Width:Petal.Width), ~ . + rnorm(.))
+```
+
+## 7.3 Summary
+
+## 7.4 Exercises

@@ -1,0 +1,179 @@
+---
+title: "Chapter 14: Putting it all together"
+author: "Sheila Mae Lucaser"
+format: html
+---
+
+## Rstudio import wizard
+
+## 14.1 Working with the flights data
+
+```{r}
+library(nycflights13)
+```
+
+### 14.1.1 How many flights arrived late each month?
+
+```{r}
+flights
+```
+
+```{r}
+flights %>% 
+  group_by (month)
+```
+
+```{r}
+flights %>% 
+  group_by(month) %>% 
+  summarise(lateflights=sum(arr_delay>5, na.rm = TRUE))
+```
+
+### 14.1.2 What percentage of traffic did each carrier represent, by month?
+
+```{r}
+flights
+```
+
+```{r}
+flights %>% 
+  group_by(month, carrier)
+```
+
+```{r}
+flights %>% 
+  group_by(month, carrier) %>% 
+  summarise(n=n())
+```
+
+```{r}
+flights %>% 
+  group_by(month, carrier) %>% 
+  summarise( n=n()) %>% 
+  group_by(month)
+```
+
+```{r}
+flights %>% 
+  group_by(month, carrier) %>% 
+  summarise( n=n()) %>% 
+  group_by(month) %>% 
+  mutate(prop=n/sum(n))
+```
+
+```{r}
+flights %>% 
+  group_by(month, carrier) %>% 
+  summarise(n=n()) %>% 
+  group_by(month) %>% 
+  mutate(prop=scales::percent(n/sum(n)),
+         n=NULL) %>% 
+  spread(month, prop)
+```
+
+### 14.1.3 What was the latest flight to depart each month?
+
+```{r}
+flights
+```
+
+```{r}
+flights %>% 
+  group_by(month)
+```
+
+```{r}
+flights %>% 
+  group_by(month) %>% 
+  arrange(desc(dep_delay))
+```
+
+```{r}
+flights %>% 
+  group_by(month) %>% 
+  arrange(desc(dep_delay)) %>% 
+  slice(1)
+```
+
+## 14.2 Working with the gapminder data
+
+```{r}
+library(gapminder)
+```
+
+### 14.2.1 What data was excluded to make the gapminder dataset?
+
+```{r}
+gapminder
+gapminder_unfiltered
+```
+
+```{r}
+gapminder %>% 
+  summarise_all(n_distinct)
+
+
+gapminder_unfiltered %>% 
+  summarise_all(n_distinct)
+```
+
+```{r}
+gapminder_unfiltered
+```
+
+```{r}
+gapminder_unfiltered %>% 
+  left_join(gapminder)
+```
+
+```{r}
+gapminder_unfiltered %>% 
+  left_join(gapminder) %>% 
+  group_by(year)
+```
+
+```{r}
+gapminder_unfiltered %>% 
+  left_join(gapminder) %>% 
+  group_by(year) %>% 
+  summarise( unfiltered=n(), 
+             filtered= sum(!is.na(pop.y)))
+```
+
+### 14.2.2 Is there data for every key year for all countries?
+
+```{r}
+gapminder %>% 
+  group_by(country) %>% 
+  summarise(yers=n(), years_check= n_distinct(year))
+```
+
+```{r}
+gapminder %>% 
+  group_by(country) %>% 
+  summarise(yers=n(), years_check= n_distinct(year)) %>% 
+  filter( years != max(years) | years != years_check) %>% 
+  nrow()
+```
+
+### 14.2.3 Provide an indexed GDP based on the earliest data
+
+```{r}
+gapminder %>% 
+  filter(years==min(year)) %>% 
+  select(year, base=gdpPercap) ->
+  index_vals
+```
+
+```{r}
+gapminder %>%
+  inner_join(index_vals)
+```
+
+```{r}
+gapminder %>% 
+  inner_join(index_vals) %>% 
+  mutate(indexeddgdp=gdpPercap/base)
+```
+
+## 14.3 Exercises

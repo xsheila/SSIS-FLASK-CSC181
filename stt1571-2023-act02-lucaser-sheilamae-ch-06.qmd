@@ -1,0 +1,47 @@
+---
+title: "Chapter 06: Re-arranging your data"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 6.1 Sorting rows
+
+```{r}
+iris %>%
+  arrange(desc(Species), Sepal.Length)
+```
+
+## 6.2 Advanced row sorting
+
+```{r}
+iris %>%
+  arrange_all()
+```
+
+```{r}
+iris %>%
+  arrange_if(is.character, desc)
+```
+
+```{r}
+iris %>%
+  arrange_at(vars(Species, starts_with("P")), desc)
+```
+
+
+## 6.3 Reordering columns
+
+```{r}
+iris %>%
+  select(starts_with("P"), everything())
+```
+
+```{r}
+iris %>%
+  select(sort(current_vars()))
+```
+
+## Summary
+
+## Exercises

@@ -1,0 +1,71 @@
+---
+title: "Chapter 12: Reshaping data"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 12.1 Unpivoting data
+
+```{r}
+mtcars %>% 
+  rownames_to_column("car") ->
+  mtcars2
+```
+
+```{r}
+mtcars2 %>% 
+  gather(measure, value, -car)
+```
+
+```{r}
+mtcars2 %>% 
+  gather(measure, value, -car) %>% 
+  group_by(measure) %>% 
+  mutate(diff= value-mean(value))
+```
+
+```{r}
+mtcars2 %>% 
+  gather(measure, value, -car, factor_key=TRUE)
+```
+
+## 12.2 Pivoting data
+
+```{r}
+mtcars %>% 
+  group_by(cyl, am) %>% 
+  summarise(avg=mean(mpg)) %>% 
+  spread(am, avg)
+```
+
+```{r}
+mtcars2 %>% 
+  group_by(cyl, am) %>% 
+  summarise (avg=round(mean(mpg),1)) %>% 
+  spread(am, avg)
+```
+
+```{r}
+mtcars2 %>% 
+  group_by(cyl, am) %>% 
+  summarise(avg=round(mean(mpg),1)) %>% 
+  spread(am, avg, sep=":")
+```
+
+## 12.3 String splitting revisited
+
+```{r}
+data_frame(measure=c("net 2017","gross 2017")) %>% 
+  separate(measure,c("type","year"))
+```
+
+```{r}
+data_frame(measure=c("net 2017","gross 2017")) %>% 
+  separate(measure,c("type","year"),
+           convert=TRUE, remove=FALSE)
+```
+
+## 12.4 Summary
+
+## 12.5 Exercise

@@ -1,0 +1,201 @@
+---
+title: "Chapter 08: Working with dates and times"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+```{r}
+library(lubridate)
+```
+
+## 8.1 Date conversions
+
+```{r}
+# Not all of these conform to year month day structure
+ymd_hms(c("20110604110101", "2011-06-04 11:01:01",
+           "2011/06/04/11/01/01","2011 june 4th, 11:01:01",
+           "2011%06%04%11%01%01","04/06/2011 11:01:01",
+           "2011-06-04 11:01:01 PDT",
+           "2011-06-04 11:01:00+1400"))
+```
+
+## 8.2 Data components
+
+```{r}
+myDate <- ymd_hms("20110604110101")
+```
+
+```{r}
+date(myDate)
+date(myDate) <- "2012-05-01"
+myDate
+```
+
+```{r}
+year(myDate)
+year(myDate) <- year(Sys.Date())
+myDate
+```
+
+```{r}
+month(myDate)
+month(myDate) <- month(Sys.Date())
+myDate
+```
+
+```{r}
+yday(myDate)
+mday(myDate)
+wday(myDate)
+wday(myDate, label = TRUE, abbr=TRUE)
+```
+
+```{r}
+sept <- ymd("20170903")
+mday(sept) <- 31
+sept
+
+feb <- ymd("20160204")
+mday(feb) <- 31
+feb
+```
+
+```{r}
+hour(myDate)
+minute(myDate)
+second(myDate)
+```
+
+## 8.3 Date arithmetic
+
+```{r}
+myDate
+```
+
+```{r}
+myDate + years(1)
+```
+
+```{r}
+myDate - months(1)
+```
+
+```{r}
+myDate + days(1)
+```
+
+```{r}
+myDate - hours(1)
+```
+
+```{r}
+myDate + minutes(1)
+```
+
+```{r}
+myDate - seconds(1)
+```
+
+```{r}
+feb <- ymd("20160228")
+feb + years(1)
+```
+
+```{r}
+feb <- ymd("20160229")
+feb + years(1)
+```
+
+```{r}
+feb <- ymd("20160228")
+feb + years(1)
+feb + dyears(1)
+```
+
+## 8.4 Date formatting
+
+```{r}
+a_date <- ymd_hms("20160228161101")
+format(a_date)
+```
+
+```{r}
+format(a_date, "%Y yo %m yo %d")
+```
+
+```{r}
+format(a_date, "%Y-%m-%d %H:%M:%S")
+```
+
+```{r}
+format(a_date, "%c")
+```
+
+```{r}
+format(a_date, "%D")
+```
+
+```{r}
+format(a_date, "%F")
+```
+
+```{r}
+format(a_date, "%z")
+format(a_date, "%Z")
+```
+
+## 8.5 Common tasks
+
+```{r}
+floor_date(ymd("20171009"), "month")
+```
+
+```{r}
+ceiling_date(ymd("20171009"), "month") - days(1)
+```
+
+```{r}
+ymd(c("20171031","20170130")) %m+% months(1)
+```
+
+```{r}
+ymd("20171011") + months(1:4)
+```
+
+```{r}
+ymd("20171031") %m+% months(1:4)
+```
+
+```{r}
+ymd(c("20171028","20171031")) %within%
+  interval(ymd("20171030"),
+           ymd("20171130"))
+```
+
+```{r}
+int_overlaps(interval(ymd("20171028"), ymd("20171031")),
+             interval(ymd("20171030"), ymd("20171130")))
+```
+
+```{r}
+# weekdays run from 1 (Sunday) to 7 (Saturday)
+getXthWeekday <- function(ymddatestring, weekday, xth){
+  monthStart <- floor_date(ymd(ymddatestring), "month")
+  startDay <-   wday(monthStart)
+  monthStart+
+    days(ifelse(startDay<=weekday,
+        weekday-startDay,
+        7-(startDay-weekday)
+        )) +
+    weeks(xth-1)
+}
+
+getXthWeekday("20171101", 3, 1)
+getXthWeekday("20171101", 3, 2)
+getXthWeekday("20171101", 3, 3)
+```
+
+## 8.6 Summary
+
+## 8.7 Exercises

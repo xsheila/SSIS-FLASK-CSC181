@@ -1,0 +1,95 @@
+---
+title: "Chapter 03: Filtering columns"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 3.1 Basic selections
+
+```{r}
+iris %>%
+  select(Species, Sepal.Length)
+```
+
+```{r}
+iris %>%
+  select(-Species)
+```
+
+```{r}
+iris %>%
+  select(Sepal.Length:Petal.Length)
+```
+
+```{r}
+iris %>%
+  select(-(Sepal.Length:Petal.Length))
+```
+
+```{r}
+iris %>%
+  select(-Species, Species)
+```
+
+```{r}
+iris %>%
+  select(Sepal.Width, Species, -Species)
+```
+
+## 3.2 Name-based selection
+
+```{r}
+iris %>%
+  select(starts_with("S"))
+```
+
+```{r}
+iris %>%
+  select(ends_with("s"))
+```
+
+```{r}
+iris %>%
+  select(contains("Length"))
+```
+
+```{r}
+iris %>%
+  select(Petal.Width:Species, -contains("Length"))
+```
+
+## 3.3 Content based selection
+
+```{r}
+iris %>%
+  select_if(is.numeric)
+```
+
+## 3.4 Advanced conditional selection
+
+```{r}
+iris %>%
+  select_if(~is.numeric(.) & n_distinct(.)>30)
+```
+
+```{r}
+is_v_unique_num <- as_mapper(
+  ~is.numeric(.) & n_distinct(.)>30
+)
+```
+
+```{r}
+is_v_unique_num(1:5)
+is_v_unique_num(LETTERS)
+is_v_unique_num(1:50)
+```
+
+```{r}
+iris %>% 
+  select_if(is_highly_unique_number)
+```
+
+## 3.5 Summary
+
+## 3.6 Exercises

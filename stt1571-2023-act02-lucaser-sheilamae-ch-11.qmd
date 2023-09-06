@@ -1,0 +1,139 @@
+---
+title: "Chapter 11: Combining datasets"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 11.1 Joining two tables to make a wider table
+
+### 11.1.1 Applying joins to scenarios
+
+### 11.1.2 Building joins
+
+```{r}
+irisLk <- data.frame(
+  species=c("setosa","virginica","VERSICOLOR"),
+  colour=c("Red","Blue","Green"))
+```
+
+```{r}
+iris %>%
+  left_join(irisLk)
+```
+
+```{r}
+iris %>%
+  left_join(irisLk, c("Species"="species"))
+```
+
+### 11.1.3 Cross joins
+
+```{r}
+iris %>%
+  mutate(dummycol=1) %>% 
+  full_join({
+    irisLk %>% 
+      mutate(dummycol=1)
+    }, by="dummycol") %>% 
+  select(-dummycol)
+```
+
+```{r}
+cross_join <- function(x, y){
+  x %>%
+    mutate(dummycol=1) %>% 
+    full_join({
+      y %>% 
+        mutate(dummycol=1)
+      }, by="dummycol") %>% 
+    select(-dummycol)
+}
+```
+
+### 11.1.4 Join examples
+
+```{r}
+iris %>% 
+  left_join(irisLk, c("Species"="species"))
+```
+
+```{r}
+iris %>% 
+  inner_join(irisLk, c("Species"="species"))
+```
+
+```{r}
+iris %>% 
+  full_join(irisLk, c("Species"="species"))
+```
+
+```{r}
+iris %>% 
+  anti_join(irisLk, c("Species"="species"))
+```
+
+```{r}
+iris %>% 
+  cross_join(irisLk)
+```
+
+```{r}
+iris %>% 
+  filter_at(vars(ends_with("Length")),
+            all_vars(.<mean(.)))
+```
+
+### 11.1.5 Join by position
+
+```{r}
+iris[,1:3] %>% 
+  bind_cols(iris[,4:5])
+```
+
+### 11.1.6 Join based on other criteria
+
+```{r}
+iris %>% 
+  cross_join(iris) %>% 
+  filter(Species.x == Species.y,
+         Sepal.Length.x < Sepal.Length.y,
+         Sepal.Width.x < Sepal.Width.y,
+         Petal.Length.x < Petal.Length.y,
+         Petal.Width.x < Petal.Width.y)
+```
+
+## 11.2 Joining two tables to make a longer table
+
+### 11.2.1 Same structure data
+
+```{r}
+iris %>% 
+  sample_n(50) %>% 
+  union(sample_n(iris, 75))
+```
+
+### 11.2.2 Differing structures
+
+```{r}
+iris %>% 
+  sample_n(50) %>% 
+  select(-Species) %>% 
+  bind_rows(sample(iris, 50))
+```
+
+```{r}
+iris1 <- iris[1:50,1:4]
+iris2 <- iris[51:100,2:5]
+iris3 <- iris[101:150,2:3]
+
+to_merge <- list(iris1, iris2, iris3)
+
+to_merge %>% 
+  bind_rows() %>% 
+  nrow()
+```
+
+## 11.3 Summary
+
+## 11.4 Exercises
