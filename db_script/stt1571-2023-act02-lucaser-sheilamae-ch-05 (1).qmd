@@ -1,0 +1,50 @@
+---
+title: "Chapter 05: Working with names"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 5.1 Working with column names
+
+```{r}
+iris %>%
+  select(sepal_width=Sepal.Width, species=Species)
+```
+
+```{r}
+iris %>%
+  rename(sepal_width=Sepal.Width, species=Species)
+```
+
+## 5.2 Advanced renaming columns
+
+```{r}
+iris %>%
+  select_all(str_to_lower)
+```
+
+```{r}
+iris %>%
+  rename_if(is.numeric, str_to_lower)
+```
+
+```{r}
+iris %>% 
+  rename_at(vars(starts_with("S")), str_to_lower)
+```
+
+## 5.3 Working with row names
+
+```{r}
+mtcars
+```
+
+```{r}
+mtcars %>%
+  rownames_to_column("car")
+```
+
+## 5.4 Summary
+
+## 5.5 Exercises

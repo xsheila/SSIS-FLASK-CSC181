@@ -1,0 +1,53 @@
+---
+title: "Chapter 13: Getting data out of R"
+author: "Sheila Mae Lucaser"
+format: html
+editor: visual
+---
+
+## 13.1 CSVs
+
+```{r}
+write_csv(iris, "iris.csv")
+```
+
+## 13.2 Spreadsheets
+
+```{r}
+library(writexl) 
+write_xlsx(iris, "iris.xlsx")
+```
+
+```{r}
+library(openxlsx) 
+write.xlsx(iris, "iris.xlsx")
+```
+
+```{r}
+write.xlsx(iris, "iris.xlsx",
+           sheetName="iris", 
+           asTable=TRUE, 
+           startCol=2, startRow=2)
+```
+
+## 13.3 Databases
+
+```{r}
+dbConn<-dbConnect(odbc(),
+          driver="ODBC Driver 13 for SQL Server", 
+          server="mhknbn2kdz.database.windows.net", 
+          database="AdventureWorks2012",
+          uid="sqlfamily",
+          pwd="sqlf@m1ly")
+```
+
+```{r}
+dbWriteTable(dbConn,
+             "iris",
+             iris,
+             overwrite=TRUE)
+```
+
+## 13.4 Summary
+
+## 13.5 Exercises
